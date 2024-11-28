@@ -1,6 +1,9 @@
+import useUsuarioStore from "../store/usuarioStore"
 
 
 function NavBar() {
+
+    const { nombre } = useUsuarioStore()
 
     return (
         <>
@@ -8,6 +11,9 @@ function NavBar() {
                 <div>
                     <img alt="" />
                 </div>
+                <h1>
+                    El nombre es: {nombre}
+                </h1>
             </nav>
         </>
     )
