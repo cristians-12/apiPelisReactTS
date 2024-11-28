@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import Componente1 from "./Componente1";
+import useUsuarioStore from "../store/usuarioStore";
 
 export interface Pelis {
     id: number;
@@ -11,6 +11,8 @@ export interface Pelis {
 function ContenedorPelis() {
 
     const [pelis, setPelis] = useState<Pelis[] | null>(null);
+
+    const { setFavoritos, favoritos } = useUsuarioStore()
 
     const obtenerPopulares = () => {
         const options = {
@@ -30,19 +32,24 @@ function ContenedorPelis() {
     useEffect(
         () => {
             obtenerPopulares()
-        }, []
+            console.log(favoritos)
+        }, [favoritos]
     )
 
     return (
         <>
             <h1>Peliculas:</h1>
-            <div className="flex flex-wrap">
+            <div className="flex flex-wrap justify-around">
                 {
                     pelis ?
                         (
                             pelis.map(
                                 (peli) => (
-                                    <div className="p-5">
+                                    <div onClick={async () => {
+                                        setFavoritos(peli)
+                                        
+                                    }} className="p-5 w-[20vw] flex flex-col items-center">
+                                        <img className="w-full" src={`https://image.tmdb.org/t/p/w500/${peli.poster_path}`} alt="" />
                                         <h1 className="font-bold">{peli.title}</h1>
                                     </div>
                                 )
@@ -53,7 +60,6 @@ function ContenedorPelis() {
                             <h1>No hay pelis.</h1>
                         )
                 }
-                <Componente1 />
             </div>
         </>
     )
